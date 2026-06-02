@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional
-from passlib.context import CryptContext
+import bcrypt
 from datetime import datetime, timedelta
 import jwt
 
@@ -99,10 +99,10 @@ class BookResponse(BookCreate):
 hashing = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str):
-    return hashing.hash(password)
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 def verify_password(plain: str, hashed: str):
-    return hashing.verify(plain, hashed)
+    return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
 
 # ─────────────────────────────────────────
 # JWT
