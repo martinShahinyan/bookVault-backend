@@ -199,13 +199,8 @@ def get_me(current_user: UserTable = Depends(get_current_user)):
         "surname": current_user.surname,
         "gmail": current_user.gmail,
         "is_admin": current_user.is_admin,
-        "created_at": current_user.created_at
-    }
-
-# ─────────────────────────────────────────
-# ADMIN ENDPOINTS
-# ─────────────────────────────────────────
-
+        "
+        
 @app.get("/admin/users")
 def get_all_users(admin: UserTable = Depends(get_admin_user), db: Session = Depends(get_db)):
     users = db.query(UserTable).all()
