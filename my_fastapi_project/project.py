@@ -9,17 +9,13 @@ import bcrypt
 from datetime import datetime, timedelta
 import jwt
 
-# ─────────────────────────────────────────
-# CONFIG
-# ─────────────────────────────────────────
-
-SECRET_KEY = "zalupa228"
+SECRET_KEY = ""
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = 30
 ADMIN_EMAIL = "martin.shahinyan2008@gmail.com"
 
 # ─────────────────────────────────────────
-# DATABASE
+# database
 # ─────────────────────────────────────────
 
 engine = create_engine("sqlite:///books.db")
@@ -32,10 +28,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# ─────────────────────────────────────────
-# SQL TABLES
-# ─────────────────────────────────────────
 
 class UserTable(Base):
     __tablename__ = "users"
@@ -67,7 +59,7 @@ class ActionLog(Base):
 Base.metadata.create_all(engine)
 
 # ─────────────────────────────────────────
-# PYDANTIC СХЕМЫ
+# pydantic
 # ─────────────────────────────────────────
 
 class UserRegister(BaseModel):
@@ -93,7 +85,7 @@ class BookResponse(BookCreate):
         from_attributes = True
 
 # ─────────────────────────────────────────
-# HASHING
+# hash
 # ─────────────────────────────────────────
 
 def hash_password(password: str):
@@ -103,7 +95,7 @@ def verify_password(plain: str, hashed: str):
     return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
 
 # ─────────────────────────────────────────
-# JWT
+# jwt
 # ─────────────────────────────────────────
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
@@ -136,7 +128,7 @@ def get_admin_user(current_user: UserTable = Depends(get_current_user)):
     return current_user
 
 # ─────────────────────────────────────────
-# HELPER 
+# helper
 # ─────────────────────────────────────────
 
 def log_action(db: Session, user_gmail: str, action: str, detail: str):
@@ -145,7 +137,7 @@ def log_action(db: Session, user_gmail: str, action: str, detail: str):
     db.commit()
 
 # ─────────────────────────────────────────
-# APP
+# app
 # ─────────────────────────────────────────
 
 app = FastAPI()
@@ -158,7 +150,7 @@ app.add_middleware(
 )
 
 # ─────────────────────────────────────────
-# USER ENDPOINTS
+# user apis
 # ─────────────────────────────────────────
 
 @app.post("/user/create")
@@ -237,7 +229,7 @@ def delete_user(user_id: int, admin: UserTable = Depends(get_admin_user), db: Se
     return {"message": "User deleted"}
 
 # ─────────────────────────────────────────
-# BOOK ENDPOINTS
+# book apis
 # ─────────────────────────────────────────
 
 @app.post("/addbook")
