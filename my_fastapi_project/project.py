@@ -9,10 +9,10 @@ import bcrypt
 from datetime import datetime, timedelta
 import jwt
 
-SECRET_KEY = ""
+SECRET_KEY = "hellofriend"
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = 30
-ADMIN_EMAIL = "martin.shahinyan2008@gmail.com"
+ADMIN_EMAIL = "martin.shahinyann@gmail.com"
 
 # ─────────────────────────────────────────
 # database
