@@ -222,7 +222,7 @@ def delete_user(user_id: int, admin: UserTable = Depends(get_admin_user), db: Se
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     if user.gmail == ADMIN_EMAIL:
-        raise HTTPException(status_code=400, detail="Cannot delete admin")
+        raise HTTPException(status_code=403, detail="Cannot delete admin")
     db.delete(user)
     db.commit()
     log_action(db, admin.gmail, "delete_user", f"Deleted user {user.gmail}")
