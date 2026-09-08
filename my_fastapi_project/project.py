@@ -157,7 +157,7 @@ app.add_middleware(
 def create_user(user_in: UserRegister, db: Session = Depends(get_db)):
     existing = db.query(UserTable).filter(UserTable.gmail == user_in.gmail).first()
     if existing:
-        raise HTTPException(status_code=400, detail="User with this email already exists")
+        raise HTTPException(status_code=409, detail="User with this email already exists")
     new_user = UserTable(**user_in.model_dump())
     new_user.password = hash_password(user_in.password)
     new_user.is_admin = (user_in.gmail == ADMIN_EMAIL)
