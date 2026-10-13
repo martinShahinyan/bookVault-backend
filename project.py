@@ -66,7 +66,6 @@ class ActionLog(Base):
 
 Base.metadata.create_all(engine)
 
-# SQLite schema migration helper
 with engine.connect() as conn:
     inspector = inspect(engine)
     columns = [col['name'] for col in inspector.get_columns('books')]
